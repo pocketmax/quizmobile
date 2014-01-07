@@ -69,8 +69,11 @@ Ext.define('Qz.controller.Boot', {
 						success: function(a,b){
 
 							var 	results = Ext.decode(b.getResponse().responseText),
-								nextQ = results.nextQuestion,
-								correctAnswer = results.correct;
+								nextQ = results.nextQuestion;
+
+							if(!results.correctAnswer.explain){
+								results.correctAnswer.explain = 'no explanation';
+							}
 
 							var nextQuestion = function(){
 
@@ -92,10 +95,10 @@ Ext.define('Qz.controller.Boot', {
 
 							};
 
-							if(correctAnswer){
-								Ext.Msg.alert('Correct', 'You got it right!', nextQuestion );
+							if(results.correct){
+								Ext.Msg.alert('Correct', results.correctAnswer.explain, nextQuestion );
 							} else {
-								Ext.Msg.alert('Wrong', 'Wrong!', nextQuestion );
+								Ext.Msg.alert('Wrong', results.correctAnswer.explain, nextQuestion );
 							}
 
 						}
